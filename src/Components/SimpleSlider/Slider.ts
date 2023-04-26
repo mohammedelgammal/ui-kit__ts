@@ -3,7 +3,7 @@ interface BreakPoint {
   [key: number]: { slidesPerView: number; gap: number };
 }
 
-// Utils
+// Utilities
 const objectNotEmpty = (obj: object): boolean => Object.keys(obj).length > 0;
 const getSliderLayout = (breakPoints: BreakPoint[]): BreakPoint => {
   const ascSortedBreakPoints: BreakPoint[] = breakPoints.sort(
@@ -17,7 +17,16 @@ const getSliderLayout = (breakPoints: BreakPoint[]): BreakPoint => {
   return currentBreakPoint;
 };
 
-class Slider {
+export class Slider {
+  /**
+   * This is a Slider class that can be used to create a responsive slider with multiple options.
+   * @class
+   * @property {BreakPoint[]} breakPoints - An array of breakpoints that will be used to change the slider layout.
+   * @property {number} slidesPerView - The number of slides that will be shown in the slider.
+   * @property {number} gap - The gap between slides.
+   * @property {number} slidesCount - The number of slides in the slider.
+   * @property {boolean} stopOnLastSlide - A boolean that indicates if the slider should stop on the last slide or not.
+   */
   constructor(
     readonly breakPoints: BreakPoint[] = [],
     readonly slidesPerView: number = 1,
@@ -25,24 +34,31 @@ class Slider {
     readonly slidesCount: number = 0,
     readonly stopOnLastSlide: boolean = false
   ) {
+    // Setting values to properties
     this.breakPoints = breakPoints;
     this.slidesPerView = slidesPerView;
     this.gap = gap;
   }
-
+  // Properties
   currentSlide: number = 0;
 
+  // Methods
   getSliderLayout = (): BreakPoint | { slidesPerView: number; gap: number } =>
     objectNotEmpty(this.breakPoints)
       ? getSliderLayout(this.breakPoints)
       : { slidesPerView: this.slidesPerView, gap: this.gap };
 
-  nextSlide = (): number | undefined =>
+  nextSlide = (): void | number =>
     this.slidesCount - this.slidesPerView > this.currentSlide
       ? this.currentSlide++
       : this.stopOnLastSlide
       ? undefined
       : (this.currentSlide = 0);
-}
 
-export default Slider;
+  prevSlide = (): void | number =>
+    this.currentSlide > 0
+      ? this.currentSlide--
+      : this.stopOnLastSlide
+      ? undefined
+      : (this.currentSlide = this.slidesCount - this.slidesPerView);
+}
