@@ -1,23 +1,21 @@
 // Interfaces
-interface BreakPoint {
-  [key: number]: { slidesPerView: number; gap: number };
-}
+import { SliderLayout, BreakPoints } from "../interfaces";
 
 // Utilities
 const objectNotEmpty = (obj: object): boolean => Object.keys(obj).length > 0;
-const getSliderLayout = (breakPoints: BreakPoint[]): BreakPoint => {
-  const ascSortedBreakPoints: BreakPoint[] = breakPoints.sort(
-    (a: BreakPoint, b: BreakPoint) =>
-      Number(Object.keys(a)[0]) - Number(Object.keys(b)[0])
+const getSliderLayout = (breakPoints: BreakPoints): SliderLayout => {
+  const ascSortedBreakPoints: BreakPoints = Object.fromEntries(
+    Object.entries(breakPoints).sort(([a], [b]) => Number(a) - Number(b))
   );
-  const currentBreakPoint: BreakPoint =
-    ascSortedBreakPoints.find(
-      (breakPoint: BreakPoint) => window.innerWidth < Number(breakPoint[0])
-    ) || ascSortedBreakPoints[ascSortedBreakPoints.length - 1];
-  return currentBreakPoint;
+  const currentBreakPoint: string | undefined =
+    Object.keys(ascSortedBreakPoints).find(
+      (breakPoint: string) => Number(breakPoint) > window.innerWidth
+    ) || Object.keys(ascSortedBreakPoints).pop();
+
+  return ascSortedBreakPoints[Number(currentBreakPoint)];
 };
 
-export class Slider {
+export default class Slider {
   /**
    * This is a Slider class that can be used to create a responsive slider with multiple options.
    * @class
@@ -28,7 +26,7 @@ export class Slider {
    * @property {boolean} stopOnLastSlide - A boolean that indicates if the slider should stop on the last slide or not.
    */
   constructor(
-    readonly breakPoints: BreakPoint[] = [],
+    readonly breakPoints?: BreakPoints,
     readonly slidesPerView: number = 1,
     readonly gap: number = 0,
     readonly slidesCount: number = 0,
@@ -38,13 +36,15 @@ export class Slider {
     this.breakPoints = breakPoints;
     this.slidesPerView = slidesPerView;
     this.gap = gap;
+    this.slidesCount = slidesCount;
+    this.stopOnLastSlide = stopOnLastSlide;
   }
   // Properties
   currentSlide: number = 0;
 
   // Methods
-  getSliderLayout = (): BreakPoint | { slidesPerView: number; gap: number } =>
-    objectNotEmpty(this.breakPoints)
+  getSliderLayout = (): SliderLayout =>
+    this.breakPoints && objectNotEmpty(this.breakPoints)
       ? getSliderLayout(this.breakPoints)
       : { slidesPerView: this.slidesPerView, gap: this.gap };
 
