@@ -31,6 +31,7 @@ const SimpleSlider: React.FC<SliderProps> = ({
   const updateSliderLayout = () => {
     const newSliderLayout = slider.getSliderLayout();
     setSliderLayout(newSliderLayout);
+    console.log("newSliderLayout", slider.getSliderLayout());
   };
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const SimpleSlider: React.FC<SliderProps> = ({
         gap: `${sliderLayout?.gap}px`,
       }}
       onClick={(e) => {
-        slider.nextSlide();
+        slider.prevSlide();
         console.log("slides count", slider.slidesCount);
         console.log("slidesPerView", slider.slidesPerView);
         console.log("currentSlide", slider.currentSlide);

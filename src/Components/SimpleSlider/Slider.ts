@@ -3,7 +3,7 @@ import { SliderLayout, BreakPoints } from "../interfaces";
 
 // Utilities
 const objectNotEmpty = (obj: object): boolean => Object.keys(obj).length > 0;
-const getSliderLayout = (breakPoints: BreakPoints): SliderLayout => {
+const getLayout = (breakPoints: BreakPoints): SliderLayout => {
   const ascSortedBreakPoints: BreakPoints = Object.fromEntries(
     Object.entries(breakPoints).sort(([a], [b]) => Number(a) - Number(b))
   );
@@ -34,8 +34,8 @@ export default class Slider {
   ) {
     // Setting values to properties
     this.breakPoints = breakPoints;
-    this.slidesPerView = slidesPerView;
-    this.gap = gap;
+    this.slidesPerView = this.getSliderLayout().slidesPerView;
+    this.gap = this.getSliderLayout().gap;
     this.slidesCount = slidesCount;
     this.stopOnLastSlide = stopOnLastSlide;
   }
@@ -45,8 +45,11 @@ export default class Slider {
   // Methods
   getSliderLayout = (): SliderLayout =>
     this.breakPoints && objectNotEmpty(this.breakPoints)
-      ? getSliderLayout(this.breakPoints)
-      : { slidesPerView: this.slidesPerView, gap: this.gap };
+      ? getLayout(this.breakPoints)
+      : {
+          slidesPerView: this.slidesPerView,
+          gap: this.gap,
+        };
 
   nextSlide = (): void | number =>
     this.slidesCount - this.slidesPerView > this.currentSlide
