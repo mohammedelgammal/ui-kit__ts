@@ -12,7 +12,6 @@ interface SliderProps {
   breakPoints?: BreakPoints;
   slidesPerView: number;
   gap: number;
-  pagination: boolean;
   stopOnLastSlide: boolean;
   children: React.ReactNode;
 }

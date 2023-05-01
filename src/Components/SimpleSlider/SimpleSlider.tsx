@@ -13,7 +13,6 @@ const SimpleSlider: React.FC<SliderProps> = ({
   breakPoints,
   slidesPerView,
   gap,
-  pagination,
   stopOnLastSlide,
   children,
 }) => {
@@ -31,16 +30,10 @@ const SimpleSlider: React.FC<SliderProps> = ({
   const updateSliderLayout = () => {
     const newSliderLayout = slider.getSliderLayout();
     setSliderLayout(newSliderLayout);
-    console.log("newSliderLayout", slider.getSliderLayout());
   };
 
   useEffect(() => {
     updateSliderLayout();
-    console.log("slides count", slider.slidesCount);
-    console.log("slidesPerView", slider.slidesPerView);
-    console.log("currentSlide", slider.currentSlide);
-    console.log("gap", slider.gap);
-    console.log("-------------");
     window.addEventListener("resize", updateSliderLayout);
     return () => window.removeEventListener("resize", updateSliderLayout);
   }, []);
@@ -58,7 +51,7 @@ const SimpleSlider: React.FC<SliderProps> = ({
         console.log("currentSlide", slider.currentSlide);
       }}
     >
-      {pagination && children}
+      {children}
     </div>
   );
 };

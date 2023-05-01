@@ -19,7 +19,6 @@ const App = () => {
           }}
           slidesPerView={3}
           gap={11}
-          pagination={true}
           stopOnLastSlide={true}
         >
           <div className={Style.slide}>1</div>
