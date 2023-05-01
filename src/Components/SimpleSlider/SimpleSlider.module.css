@@ -1,0 +1,6 @@
+.sliderContainer {
+  display: inline-flex;
+  width: 260px;
+  background-color: yellow;
+  overflow: hidden;
+}

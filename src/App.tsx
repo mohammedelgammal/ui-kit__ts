@@ -6,7 +6,7 @@ import Button from "./Components/Button/Button";
 import ThemeProvider from "./Components/ThemeProvider/ThemeProvider";
 
 // Styles
-// import Style from "./App.module.css";
+import Style from "./App.module.css";
 
 const App = () => {
   return (
